@@ -130,7 +130,7 @@ window.showToast = function(msg) {
       <div class="container footer-content">
         <div>
           <span class="footer-title">GAKUSEI：建築学生サーバー</span>
-          <p class="footer-copy">© 2026 GAKUSEI Architecture Server. 非公式Minecraftコミュニティサーバー。</p>
+          <p class="footer-copy">© 2026 トクメームノーサーバー｜建築学生｜非公式Minecraftコミュニティ</p>
         </div>
         <div class="footer-links">
           <a href="index.html">ホーム</a>
