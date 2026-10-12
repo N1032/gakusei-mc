@@ -109,7 +109,7 @@ window.showToast = function(msg) {
             <li><a href="commands.html" class="${currentPage === 'commands.html' ? 'active' : ''}">コマンド</a></li>
             <li><a href="contact.html" class="${currentPage === 'contact.html' ? 'active' : ''}">お問い合わせ</a></li>
             <li>
-              <a href="https://discord.gg/9Ex2hYVqra" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-header">
+              <a href="https://x.com/MUMEI_1032/status/2062990677764718611?s=20" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-header">
                 Discord参加
                 <svg class="icon-ext" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
               </a>
