@@ -73,8 +73,8 @@ window.showToast = function(msg) {
         </li>
       </ul>
       <div class="drawer-footer">
-        <p>GAKUSEI Architecture Server</p>
-        <p>Season 2 Active</p>
+        <p>MUMEI1032｜トクメームノーサーバー</p>
+        <p>建築学生シーズン２</p>
       </div>
     </aside>
 
