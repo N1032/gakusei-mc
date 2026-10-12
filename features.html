@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>独自システム解説 - GAKUSEI：建築学生サーバー</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=IBM+Plex+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 2カラム構成 -->
+  <div class="page-layout container">
+    <aside class="toc-sidebar">
+      <div class="toc-header">
+        <span class="toc-tag">SYSTEMS</span>
+        <h4 class="toc-title">機能一覧目次</h4>
+      </div>
+      <nav class="toc-nav">
+        <ul id="featuresTocNav"></ul>
+      </nav>
+    </aside>
+
+    <div class="content-main">
+      <div class="section-header">
+        <span class="section-tag">CUSTOM SYSTEMS</span>
+        <h1 class="section-title">独自システム・機能仕様</h1>
+        <p class="section-desc">このサーバーに追加されているオリジナル機能についてご紹介します。</p>
+      </div>
+
+      <div id="featuresListContainer"></div>
+
+      <!-- Discord案内（お問い合わせボタン付き） -->
+      <div class="discord-banner scroll-target" id="feat-discord">
+        <h2>機能への要望・バグ報告</h2>
+        <p>「こんな建築支援ツールが欲しい」「コマンドが動作しない」といったご意見は公式Discordまたはお問い合わせフォームにて随時承っています。</p>
+        <div class="banner-actions">
+          <a href="https://discord.gg/9Ex2hYVqra" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            Discordに参加する
+            <svg class="icon-ext" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+          </a>
+          <a href="contact.html" class="btn btn-outline-white">
+            お問い合わせフォーム
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- データファイルと共通UIスクリプトの読み込み -->
+  <script src="data.js"></script>
+  <script src="common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // featuresDataから動的レンダリング
+      if (typeof featuresData !== 'undefined') {
+        const listContainer = document.getElementById('featuresListContainer');
+        const tocNav = document.getElementById('featuresTocNav');
+
+        let cardsHTML = '';
+        let tocHTML = '';
+
+        featuresData.forEach(feat => {
+          tocHTML += `<li><a href="#${feat.id}" class="toc-link">${feat.title}</a></li>`;
+
+          cardsHTML += `
+            <article class="feature-detail-card scroll-target" id="${feat.id}">
+              <div class="feature-detail-header">
+                <div class="feature-title-group">
+                  <h3>${feat.title}</h3>
+                </div>
+                <span class="feature-tag">${feat.tag}</span>
+              </div>
+              <div class="feature-detail-body">
+                <p>${feat.description}</p>
+                ${feat.command ? `
+                  <div class="feature-command-box">
+                    <span>操作・実行コマンド:</span>
+                    <code>${feat.command}</code>
+                  </div>
+                ` : ''}
+                <p>${feat.detail}</p>
+              </div>
+            </article>
+          `;
+        });
+
+        tocHTML += `<li><a href="#feat-discord" class="toc-link">機能要望・報告</a></li>`;
+        if (tocNav) tocNav.innerHTML = tocHTML;
+        if (listContainer) listContainer.innerHTML = cardsHTML;
+      }
+
+      // 目次スクロール追従
+      const targets = document.querySelectorAll('.scroll-target');
+      const tocLinks = document.querySelectorAll('.toc-link');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            tocLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+              } else {
+                link.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+
+      targets.forEach(t => observer.observe(t));
+    });
+  </script>
+</body>
+</html>

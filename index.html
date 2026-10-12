@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAKUSEI：建築学生サーバー - ホーム</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=IBM+Plex+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ヒーローセクション（YouTube背景動画＋左側黒グラデーション） -->
+  <section class="hero scroll-target" id="sec-hero">
+    <div class="hero-grid-bg"></div>
+
+    <div class="hero-video-wrapper" id="heroVideoWrapper">
+      <div id="youtubePlayer"></div>
+      <div class="hero-video-overlay"></div>
+    </div>
+
+    <div class="container hero-container">
+      <div class="hero-badge">Minecraft Java / Bedrock クロスプレイ対応</div>
+      <h1 class="hero-title">
+        <span class="highlight">一人ひとつのワールド</span>が貰える</br>
+        建築サーバー。
+      </h1>
+      <p class="hero-lead">
+        それは、昔存在した幻のサーバーを再現するためにとある一人の学生が思い立って造り上げた、パクリと（少々の）不具合が積み重なった壮大なるサーバー</span>である。
+      </p>
+
+      <!-- サーバー接続情報カード -->
+      <div class="server-connection-box" id="sec-address">
+        <div class="connection-item">
+          <span class="connection-label">サーバーアドレス (Java / Bedrock)</span>
+          <div class="copy-field" data-copy="m1032.duckdns.org">
+            <code>m1032.duckdns.org</code>
+            <button class="btn-copy">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13"></rect><path d="M5 15H4V4h11v1"></path></svg>
+              <span>コピー</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="connection-item">
+          <span class="connection-label">Bedrock向けポート</span>
+          <div class="static-field">
+            <code>19132</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#sec-guide" class="btn btn-primary">ワールドの作り方</a>
+        <a href="features.html" class="btn btn-dark">独自システムを見る</a>
+        <a href="commands.html" class="btn">コマンド一覧</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2カラムコンテンツエリア -->
+  <div class="page-layout container">
+    <!-- 左サイドバー：目次ナビゲーション -->
+    <aside class="toc-sidebar">
+      <div class="toc-header">
+        <span class="toc-tag">CONTENTS</span>
+        <h4 class="toc-title">ページ内目次</h4>
+      </div>
+      <nav class="toc-nav">
+        <ul>
+          <li><a href="#sec-hero" class="toc-link">TOP</a></li>
+          <li><a href="#sec-about" class="toc-link">サーバー概要</a></li>
+          <li><a href="#sec-guide" class="toc-link">初めての方はこちらから</a></li>
+          <li><a href="#sec-whats-new" class="toc-link">最新情報</a></li>
+          <li><a href="#sec-specs" class="toc-link">推奨動作環境</a></li>
+          <li><a href="#sec-discord" class="toc-link">公式Discord</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- 右側：メインコンテンツ -->
+    <div class="content-main">
+      <!-- サーバー概要 -->
+      <section class="section scroll-target" id="sec-about">
+        <div class="section-header">
+          <span class="section-tag">ABOUT</span>
+          <h2 class="section-title">サーバー概要</h2>
+          <p class="section-desc">大学2年生（2026年7月現在）が企画・運営を手掛けるマルチ建築サーバーです。</p>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 class="card-title">一人ひとつのワールド</h3>
+            <p class="card-desc">参加者全員に<span class="marker">スーパーフラットのワールド</span>が与えられます。アスレチックワールドや街作りなど自分の思うがままにワールドを作ることができます。</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Java ＆ 統合版マルチプレイ</h3>
+            <p class="card-desc">PC（Java Edition）、スマホ・タブレット・Windows（Bedrock Edition）のどちらからでも同じ空間に集まることが可能です。<br><span class="marker">Minecraft Java : 26.2</span><br><span class="marker">Minecraft Bedrock : v26.52</span><br>Bedrockは自動アップデートをOFFにしてください。アップデート配信直後はサーバーに参加できない場合があります。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 初めての方へ：手順ガイド -->
+      <section class="section scroll-target" id="sec-guide">
+        <div class="section-header">
+          <span class="section-tag">HOW TO JOIN</span>
+          <h2 class="section-title">初めての方はこちらから</h2>
+          <p class="section-desc">自分のワールドはサーバー負荷軽減のため自動生成されません。以下の手順通りにワールドを作りましょう！</p>
+        </div>
+
+        <div class="steps-flow">
+          <div class="step-card-row">
+            <div class="step-index">01</div>
+            <div class="step-content">
+              <h3>サーバーへ接続</h3>
+              <p>アドレス <code>m1032.duckdns.org</code>（統合版ポート <code>19132</code>）でサーバーに参加します。</p>
+            </div>
+          </div>
+
+          <div class="step-arrow">
+            <div class="step-arrow-icon"></div>
+          </div>
+
+          <div class="step-card-row">
+            <div class="step-index">02</div>
+            <div class="step-content">
+              <h3>ワールドを作成・移動</h3>
+              <p>参加したら手元の草ブロックを右クリックします。（スマホの方は長押し）または素手で地面を２回左クリック（スマホの方は２回タップ）してワールドメニューを表示させてから、草ブロックを自分のインベントリに移動させてください。これらの操作を行うことで自分専用のワールドが生成されます。<br><code>/wo me</code>または、エンダーパールを右クリック（スマホの方は長押し）することで自分のワールドへ移動します。</p>
+            </div>
+          </div>
+
+          <div class="step-arrow">
+            <div class="step-arrow-icon"></div>
+          </div>
+
+          <div class="step-card-row">
+            <div class="step-index">03</div>
+            <div class="step-content">
+              <h3>自分のワールドを建築しよう！</h3>
+              <p><code>/wo gm 1</code> でクリエイティブ化。フレンドを呼ぶ場合は <code>/wo invite プレイヤー名</code> で編集権限を付与します。<br><code>/wo s</code>また素手で地面を２回左クリック（スマホの方は２回タップ）して表示するワールドメニューからレッドストーンダストを選択すると、ワールド設定メニューを表示することができます。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 最新情報 / What's New ＆ タイムライン -->
+      <section class="section scroll-target" id="sec-whats-new">
+        <div class="section-header">
+          <span class="section-tag">WHAT'S NEW</span>
+          <h2 class="section-title">最新情報 ＆ アップデートログ</h2>
+          <p class="section-desc">サーバーの機能追加やメンテナンス情報を掲載しています。</p>
+        </div>
+
+        <div class="highlight-news" id="newsHighlightContainer"></div>
+
+        <div class="timeline">
+          <div class="timeline-header">
+            <span>過去のアップデート履歴</span>
+          </div>
+          <div class="timeline-list" id="timelineContainer"></div>
+        </div>
+      </section>
+
+      <!-- 推奨動作環境 -->
+      <section class="section scroll-target" id="sec-specs">
+        <div class="section-header">
+          <span class="section-tag">SPECIFICATIONS</span>
+          <h2 class="section-title">推奨動作環境</h2>
+          <p class="section-desc">ここでは参加するクライアント環境の目安を表示しています。最低要求性能ではありません。<br><span class="marker">Bedrockは自動アップデートをOFFにしてください。</span>アップデートにより参加できなくなる場合があります。</p>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="spec-card">
+            <div class="spec-header">
+              <h3>Android 端末</h3>
+            </div>
+            <ul class="spec-list">
+              <li><strong>SoC:</strong> Snapdragon 778G 以降 / Snapdragon 865 以降</li>
+              <li><strong>OS:</strong> Android 12.0 以降</li>
+              <li><strong>メモリ (RAM):</strong> 6GB 以上</li>
+              <li><strong>空き容量:</strong> 64GB 以上</li>
+              <li><strong>画面解像度:</strong> フルHD (1920×1080) 以上</li>
+            </ul>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <h3>iPhone / iPad</h3>
+            </div>
+            <ul class="spec-list">
+              <li><strong>SoC:</strong> Apple A15 Bionic (iPhone 13) 以降 / Apple M1 (iPad) 以降</li>
+              <li><strong>OS:</strong> 常に最新版へのアップデートを推奨</li>
+            </ul>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <h3>PC (Bedrock Edition)</h3>
+            </div>
+            <ul class="spec-list">
+              <li><strong>CPU:</strong> Intel Core i5 (第11世代以降) / AMD Ryzen 5 (4500/5500以降)</li>
+              <li><strong>OS:</strong> Windows 11</li>
+              <li><strong>メモリ (RAM):</strong> 8GB 以上</li>
+              <li><strong>本体容量:</strong> 256GB 以上</li>
+              <li><strong>解像度:</strong> フルHD以上 (グラフィックボード推奨)</li>
+            </ul>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <h3>PC (Java Edition)</h3>
+            </div>
+            <ul class="spec-list">
+              <li><strong>CPU:</strong> Intel Core i5 (第12世代以降) / AMD Ryzen 5 (5600以降)</li>
+              <li><strong>OS:</strong> Windows 11 / macOS 14 / Linux</li>
+              <li><strong>メモリ (RAM):</strong> 16GB 以上</li>
+              <li><strong>本体容量:</strong> 256GB 以上</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Discord案内（お問い合わせボタン付き） -->
+      <section class="scroll-target" id="sec-discord">
+        <div class="discord-banner">
+          <h2>公式コミュニティ「トクメームノーサーバー」</h2>
+          <p>Discordで最新情報を得たり、プレイヤー同士のコミュニティに参加してみましょう。参加は任意です。</p>
+          <div class="banner-actions">
+            <a href="https://discord.gg/9Ex2hYVqra" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Discordに参加する
+              <svg class="icon-ext" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+            </a>
+            <a href="contact.html" class="btn btn-outline-white">
+              お問い合わせフォーム
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- データファイルと共通UIスクリプトの読み込み -->
+  <script src="data.js"></script>
+  <script src="common.js"></script>
+
+  <!-- YouTube背景動画制御 -->
+  <script>
+    const ytScript = document.createElement('script');
+    ytScript.src = "https://www.youtube.com/iframe_api";
+    const firstScript = document.getElementsByTagName('script')[0];
+    firstScript.parentNode.insertBefore(ytScript, firstScript);
+
+    let ytPlayer;
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('youtubePlayer', {
+        videoId: '8ce26zLTYpM',
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          loop: 1,
+          playlist: '8ce26zLTYpM',
+          playsinline: 1,
+          rel: 0,
+          showinfo: 0,
+          modestbranding: 1,
+          iv_load_policy: 3
+        },
+        events: {
+          onReady: (event) => {
+            event.target.mute();
+            event.target.playVideo();
+          },
+          onStateChange: (event) => {
+            const wrapper = document.getElementById('heroVideoWrapper');
+            if (event.data === YT.PlayerState.PLAYING) {
+              if (wrapper) wrapper.classList.add('is-playing');
+            } else if (event.data === YT.PlayerState.PAUSED) {
+              event.target.playVideo();
+            } else if (event.data === YT.PlayerState.ENDED) {
+              event.target.playVideo();
+            }
+          },
+          onError: () => {
+            const wrapper = document.getElementById('heroVideoWrapper');
+            if (wrapper) wrapper.classList.remove('is-playing');
+          }
+        }
+      });
+    }
+
+    function ensureVideoPlayback() {
+      if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+        ytPlayer.playVideo();
+      }
+    }
+    window.addEventListener('focus', ensureVideoPlayback);
+    window.addEventListener('pageshow', ensureVideoPlayback);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) ensureVideoPlayback();
+    });
+
+    // 最新情報・タイムライン描画
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof newsData !== 'undefined') {
+        const topic = newsData.currentTopic;
+        const highlightContainer = document.getElementById('newsHighlightContainer');
+        if (highlightContainer && topic) {
+          let sectionsHTML = '';
+          topic.sections.forEach(sec => {
+            const listItems = sec.items.map(item => `<li>${item}</li>`).join('');
+            sectionsHTML += `
+              <div class="news-box">
+                <h4>${sec.heading}</h4>
+                <ul>${listItems}</ul>
+              </div>
+            `;
+          });
+
+          highlightContainer.innerHTML = `
+            <span class="news-badge">${topic.badge}</span>
+            <h3 class="news-title">${topic.title}</h3>
+            <p class="news-desc">${topic.description}</p>
+            <div class="grid grid-2">${sectionsHTML}</div>
+          `;
+        }
+
+        const timelineContainer = document.getElementById('timelineContainer');
+        if (timelineContainer && newsData.timeline) {
+          timelineContainer.innerHTML = newsData.timeline.map(item => `
+            <div class="timeline-item">
+              <span class="timeline-date">${item.date}</span>
+              <p>${item.text}</p>
+            </div>
+          `).join('');
+        }
+      }
+
+      // アドレスコピー処理
+      const copyFields = document.querySelectorAll('.copy-field');
+      copyFields.forEach(field => {
+        field.addEventListener('click', async () => {
+          const text = field.getAttribute('data-copy');
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {
+            const inp = document.createElement('input');
+            inp.value = text;
+            document.body.appendChild(inp);
+            inp.select();
+            document.execCommand('copy');
+            document.body.removeChild(inp);
+          }
+          window.showToast(`コピー完了: ${text}`);
+        });
+      });
+
+      // 目次スクロール連動
+      const targets = document.querySelectorAll('.scroll-target');
+      const tocLinks = document.querySelectorAll('.toc-link');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            tocLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+              } else {
+                link.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+
+      targets.forEach(t => observer.observe(t));
+    });
+  </script>
+</body>
+</html>

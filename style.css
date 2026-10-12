@@ -1,0 +1,1539 @@
+/* ==========================================================================
+   設計システム：クリーム背景・ダークグレー・黄色（rgb(252, 202, 53)）
+   フォント：IBM Plex Sans JP（全編統一 / 見出し: 700 / 本文: 400）
+   ボタンシャドウなし（フラット・直角）
+   ========================================================================== */
+:root {
+  /* 上品なクリーム色背景 */
+  --bg-main: #f7f5ee;
+  --bg-card: #fefdfa;
+  --bg-sub: #ece8db;
+
+  /* コマンド用のグレー網掛け背景 */
+  --bg-code: #e5e3da;
+
+  /* 上品なダークグレー */
+  --dark: #272a30;
+  --dark-soft: #3e434c;
+  --text-main: #272a30;
+  --text-muted: #5e6573;
+
+  --border: #272a30;
+  --border-light: #ded9cb;
+
+  /* アクセントカラー（鮮やかなイエロー） */
+  --yellow: rgb(252, 202, 53);
+  --yellow-hover: rgb(230, 180, 35);
+  --yellow-pale: rgba(252, 202, 53, 0.22);
+
+  --font-sans: 'IBM Plex Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'Fira Code', Menlo, Monaco, Consolas, monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important; /* すべての角丸を完全排除 */
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* コマンドのスタイル：枠線をなくし灰色の網掛けのみ。文字潰れを防ぐMediumウェイト */
+code {
+  font-family: var(--font-mono);
+  background-color: var(--bg-code);
+  color: var(--text-main);
+  padding: 0.15rem 0.5rem;
+  font-size: 0.9em;
+  border: none !important;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  display: inline-block;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+/* コマンドテーブル内のクリック可能コード要素 */
+.command-table code {
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.command-table code:hover {
+  background-color: var(--yellow);
+  color: var(--dark);
+}
+
+.command-table code:active {
+  transform: scale(0.97);
+}
+
+/* 蛍光ペン風マーカースタイル */
+.marker {
+  background-color: var(--yellow);
+  color: var(--dark);
+  font-weight: 600;
+  padding: 0.1em 0.35em;
+  display: inline;
+}
+
+/* PC時のコンテナ幅 */
+.container {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* スクロール追従時のヘッダー被り防止 */
+section, article, .scroll-target {
+  scroll-margin-top: 5.5rem;
+}
+
+/* ==========================================================================
+   四角形コンテナの共通「角三角（左上・右下）」幾何学装飾
+   ========================================================================== */
+.card,
+.step-card-row,
+.highlight-news,
+.spec-card,
+.feature-detail-card,
+.feature-command-box,
+.server-connection-box,
+.timeline,
+.form-card {
+  position: relative;
+}
+
+.card::before,
+.step-card-row::before,
+.highlight-news::before,
+.spec-card::before,
+.feature-detail-card::before,
+.feature-command-box::before,
+.server-connection-box::before,
+.timeline::before,
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 13px solid var(--yellow);
+  border-right: 13px solid transparent;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.card::after,
+.step-card-row::after,
+.highlight-news::after,
+.spec-card::after,
+.feature-detail-card::after,
+.feature-command-box::after,
+.server-connection-box::after,
+.timeline::after,
+.form-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom: 13px solid var(--yellow);
+  border-left: 13px solid transparent;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   画像配置用ユーティリティ
+   ========================================================================== */
+.img-frame {
+  border: 2px solid var(--border);
+  background-color: var(--bg-sub);
+  overflow: hidden;
+  margin: 1.25rem 0;
+  display: block;
+}
+
+.img-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.img-frame.aspect-16-9 img {
+  aspect-ratio: 16 / 9;
+}
+
+.img-caption {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 0.4rem 0.75rem;
+  border-top: 1px solid var(--border);
+  background-color: var(--bg-card);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   上部告知バー (右から左へのスライド・10秒切り替え)
+   ========================================================================== */
+.announcement-bar {
+  background-color: var(--dark);
+  color: var(--bg-main);
+  border-bottom: 2px solid var(--yellow);
+  height: 44px;
+  overflow: hidden;
+  position: relative;
+}
+
+.announcement-viewport {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.announcement-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.announcement-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.announcement-slide.prev {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.live-badge {
+  background-color: var(--yellow);
+  color: var(--dark);
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.announcement-counter {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--yellow);
+  flex-shrink: 0;
+}
+
+.announcement-text {
+  font-weight: 400;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55vw;
+}
+
+.announcement-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--bg-main);
+  border: 1px solid var(--bg-main);
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.announcement-link:hover {
+  background-color: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--dark);
+}
+
+/* ==========================================================================
+   ヘッダー ＆ ドロワーメニュー
+   ========================================================================== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--bg-main);
+  border-bottom: 2px solid var(--border);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4.75rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  transition: opacity 0.15s;
+}
+
+.menu-toggle:hover {
+  opacity: 0.7;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--dark);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-logo-img {
+  display: none;
+  height: 40px;
+  width: auto;
+  max-width: 240px;
+  object-fit: contain;
+}
+
+.brand-fallback-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-symbol {
+  width: 38px;
+  height: 38px;
+  background-color: var(--dark);
+  color: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.brand-symbol img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-sub {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--dark);
+  letter-spacing: -0.01em;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.desktop-nav a {
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a.active {
+  border-bottom-color: var(--yellow);
+}
+
+.icon-ext {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.35rem;
+  flex-shrink: 0;
+}
+
+/* ドロワーオーバーレイ */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(39, 42, 48, 0.6);
+  z-index: 190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ドロワー本体 */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  max-width: 85vw;
+  height: 100%;
+  background-color: var(--bg-main);
+  border-right: 2px solid var(--border);
+  z-index: 200;
+  transform: translateX(-100%);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  height: 4.75rem;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--border);
+  gap: 0.5rem;
+}
+
+.drawer-header .brand-logo-img {
+  max-width: 190px;
+  height: 34px;
+}
+
+.drawer-close {
+  background: none;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.drawer-close:hover {
+  background-color: var(--yellow);
+}
+
+.drawer-nav {
+  padding: 1.5rem 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-nav li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-left: 4px solid transparent;
+  transition: all 0.15s;
+}
+
+.drawer-nav li a:hover,
+.drawer-nav li a.active {
+  background-color: var(--yellow-pale);
+  border-left-color: var(--yellow);
+}
+
+.drawer-footer {
+  margin-top: auto;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   2カラムレイアウト（左：目次サイドバー / 右：メインコンテンツ）
+   ========================================================================== */
+.page-layout {
+  display: block;
+}
+
+@media (min-width: 992px) {
+  .page-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2.75rem;
+    align-items: start;
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+}
+
+.toc-sidebar {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .toc-sidebar {
+    display: block;
+    position: sticky;
+    top: 6rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    border: 2px solid var(--border);
+    background-color: var(--bg-card);
+  }
+}
+
+.toc-header {
+  background-color: var(--dark);
+  color: var(--bg-main);
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.toc-tag {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--yellow);
+  letter-spacing: 0.12em;
+}
+
+.toc-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--bg-main);
+}
+
+.toc-nav {
+  padding: 0.75rem 0;
+}
+
+.toc-nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+
+.toc-link:hover {
+  color: var(--text-main);
+  background-color: var(--yellow-pale);
+}
+
+.toc-link.active {
+  color: var(--text-main);
+  background-color: var(--yellow);
+  border-left-color: var(--border);
+  font-weight: 700;
+}
+
+.content-main {
+  min-width: 0;
+}
+
+/* ==========================================================================
+   ボタン各種
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.925rem;
+  font-weight: 600;
+  padding: 0.65rem 1.35rem;
+  cursor: pointer;
+  border: 2px solid var(--border);
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  box-shadow: none !important;
+  transition: all 0.15s;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.btn-primary {
+  background-color: var(--yellow);
+  color: var(--dark);
+  border: 2px solid var(--border) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--yellow-hover);
+}
+
+.btn-dark {
+  background-color: var(--dark);
+  color: var(--bg-main);
+  border: 2px solid var(--dark) !important;
+}
+
+.btn-dark:hover {
+  background-color: var(--yellow);
+  color: var(--dark);
+  border-color: var(--border) !important;
+}
+
+/* バナー用ホワイトアウトラインボタン */
+.btn-outline-white {
+  background-color: transparent;
+  color: var(--bg-main);
+  border: 2px solid var(--bg-main) !important;
+}
+
+.btn-outline-white:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.btn-header {
+  padding: 0.55rem 1.6rem !important;
+  border: 2px solid var(--border) !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   ヒーローセクション ＆ YouTube背景動画
+   ========================================================================== */
+.hero {
+  position: relative;
+  /* ヒーローの高さ調整：上下padding */
+  padding: 5rem 0 4rem;
+  background-color: var(--dark);
+  border-bottom: 2px solid var(--border);
+  overflow: hidden;
+}
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(39, 42, 48, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(39, 42, 48, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-video-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.hero-video-wrapper.is-playing {
+  opacity: 1;
+}
+
+/* 拡大率の調整箇所：scale(1.0) を変更して拡大・縮小可能 */
+.hero-video-wrapper iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 177.77vh;
+  min-width: 100vw;
+  height: 56.25vw;
+  min-height: 100vh;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: none;
+  border: none;
+}
+
+/* 左側が約5割黒、右側は透明で映像がガッツリ見えるグラデーション */
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(20, 22, 26, 0.78) 0%,
+    rgba(20, 22, 26, 0.65) 45%,
+    rgba(20, 22, 26, 0.25) 70%,
+    rgba(20, 22, 26, 0) 100%
+  );
+  z-index: 1;
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--dark);
+  background-color: var(--yellow);
+  padding: 0.25rem 0.75rem;
+  border: 2px solid var(--border);
+  margin-bottom: 1.25rem;
+}
+
+.hero-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+}
+
+.hero-title .highlight {
+  background-color: var(--yellow);
+  color: var(--dark);
+  padding: 0 0.35rem;
+  display: inline-block;
+}
+
+.hero-lead {
+  font-size: 1.05rem;
+  color: #e2e5eb;
+  max-width: 760px;
+  margin-bottom: 2rem;
+}
+
+.server-connection-box {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  background-color: var(--bg-card);
+  padding: 1.25rem;
+  border: 2px solid var(--border);
+  margin-bottom: 2rem;
+  max-width: 800px;
+}
+
+.connection-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.connection-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.copy-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-main);
+  border: 2px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copy-field:hover {
+  background-color: var(--yellow-pale);
+  border-color: var(--border);
+}
+
+.copy-field code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.static-field {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-main);
+  border: 2px solid var(--border);
+  padding: 0.5rem 0.75rem;
+}
+
+.static-field code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.btn-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--dark);
+  color: var(--bg-main);
+  border: none;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.copy-field:hover .btn-copy {
+  background: var(--yellow);
+  color: var(--dark);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   汎用セクション ＆ コンポーネント
+   ========================================================================== */
+.section {
+  padding: 3.5rem 0;
+}
+
+.section-alt {
+  background-color: var(--bg-sub);
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+}
+
+.section-header {
+  text-align: left;
+  max-width: 800px;
+  margin-bottom: 2.5rem;
+  position: relative;
+  padding-left: 1.25rem;
+  border-left: 5px solid var(--yellow);
+}
+
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.section-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border);
+  padding: 1.75rem;
+  transition: background-color 0.15s;
+}
+
+.card:hover {
+  background-color: #ffffff;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: 0.5rem;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   ステップガイド（01番・タイポグラフィ重視）
+   ========================================================================== */
+.steps-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  max-width: 900px;
+}
+
+.step-card-row {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border);
+  padding: 1.75rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.step-index {
+  font-family: var(--font-sans);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1;
+  padding-right: 1.75rem;
+  border-right: 3px solid var(--yellow);
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex-grow: 1;
+}
+
+.step-content h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.step-content p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.step-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.85rem 0;
+}
+
+.step-arrow-icon {
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 16px solid var(--dark);
+}
+
+/* ==========================================================================
+   最新情報 ＆ タイムライン（塗りつぶしなし・枠線のみ）
+   ========================================================================== */
+.highlight-news {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.news-badge {
+  display: inline-block;
+  background-color: var(--dark);
+  color: var(--yellow);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+}
+
+.news-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.news-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.news-box {
+  background-color: transparent;
+  border: 2px solid var(--border);
+  padding: 1.25rem;
+}
+
+.news-box h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: 0.25rem;
+}
+
+.news-box ul {
+  list-style: square inside;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.timeline {
+  border: 2px solid var(--border);
+  background-color: var(--bg-card);
+}
+
+.timeline-header {
+  background-color: var(--dark);
+  color: var(--bg-main);
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.timeline-list {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--border);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  background-color: var(--yellow);
+  border: 1px solid var(--border);
+}
+
+.timeline-date {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--dark);
+  background-color: var(--yellow);
+  padding: 0 0.3rem;
+  display: inline-block;
+  margin-bottom: 0.2rem;
+}
+
+.timeline-item p {
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   スペック比較カード
+   ========================================================================== */
+.spec-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border);
+  padding: 1.75rem;
+}
+
+.spec-header {
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.spec-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.spec-list {
+  list-style: none;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: var(--text-muted);
+}
+
+.spec-list strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   コマンド一覧：左サイドバー検索＆カテゴリ操作パネル
+   ========================================================================== */
+.cmd-sidebar-controller {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem;
+}
+
+.cmd-side-search-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cmd-side-search-box label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.side-search-input-wrap {
+  display: flex;
+  border: 2px solid var(--border);
+  background-color: var(--bg-main);
+}
+
+.side-search-input-wrap input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  background: transparent;
+  color: var(--text-main);
+}
+
+.side-search-input-wrap .search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.6rem;
+  background-color: var(--bg-sub);
+  border-left: 1px solid var(--border);
+}
+
+.cmd-side-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cmd-side-filters-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.side-filter-btn {
+  width: 100%;
+  text-align: left;
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.15s;
+}
+
+.side-filter-btn:hover {
+  background-color: var(--yellow-pale);
+}
+
+.side-filter-btn.active {
+  background-color: var(--yellow);
+  color: var(--dark);
+  border-color: var(--border);
+  font-weight: 700;
+}
+
+.cmd-count-status {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.75rem;
+}
+
+.command-table-container {
+  border: 2px solid var(--border);
+  background-color: var(--bg-card);
+  overflow-x: auto;
+}
+
+.command-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.command-table th {
+  background-color: var(--dark);
+  color: var(--bg-main);
+  font-weight: 600;
+  padding: 0.9rem 1.25rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  border-right: 1px solid var(--dark-soft);
+}
+
+.command-table th:last-child {
+  border-right: none;
+}
+
+.command-table td {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.command-table td:last-child {
+  border-right: none;
+}
+
+.command-table tbody tr:hover {
+  background-color: var(--yellow-pale);
+}
+
+.cmd-category-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--bg-sub);
+}
+
+/* ==========================================================================
+   独自システム機能詳細カード
+   ========================================================================== */
+.feature-detail-card {
+  border: 2px solid var(--border);
+  background-color: var(--bg-card);
+  padding: 2.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.feature-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.feature-title-group h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.feature-tag {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: var(--yellow);
+  color: var(--dark);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--border);
+}
+
+.feature-detail-body {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.feature-detail-body p {
+  margin-bottom: 1rem;
+}
+
+.feature-command-box {
+  background-color: transparent;
+  border: 2px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0;
+}
+
+.feature-command-box span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   お問い合わせフォーム用コンテナ (contact.html)
+   ========================================================================== */
+.form-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border);
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.form-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 700px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.form-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 700px;
+  border: none;
+  display: block;
+}
+
+/* ==========================================================================
+   Discordバナー ＆ フッター（お問い合わせボタン配置）
+   ========================================================================== */
+.discord-banner {
+  border: 2px solid var(--border);
+  background-color: var(--dark);
+  color: var(--bg-main);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin: 3rem auto 0;
+}
+
+.discord-banner h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--yellow);
+}
+
+.discord-banner p {
+  max-width: 650px;
+  margin: 0 auto 1.75rem;
+  color: #c0c4cc;
+  font-size: 0.95rem;
+}
+
+.banner-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: var(--dark);
+  color: var(--bg-main);
+  border: 2px solid var(--yellow);
+  padding: 0.8rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(15px);
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footer {
+  background-color: var(--dark);
+  color: #9ba0aa;
+  padding: 3rem 0;
+  border-top: 2px solid var(--yellow);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.footer-title {
+  font-weight: 700;
+  color: var(--bg-main);
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+
+.footer-links a:hover {
+  color: var(--yellow);
+}
+
+/* ==========================================================================
+   レスポンシブ
+   ========================================================================== */
+@media (max-width: 991px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .server-connection-box {
+    grid-template-columns: 1fr;
+  }
+  .step-card-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  .step-index {
+    border-right: none;
+    border-bottom: 3px solid var(--yellow);
+    padding-right: 0;
+    padding-bottom: 0.5rem;
+    font-size: 1.8rem;
+  }
+  .hero-video-overlay {
+    background: rgba(20, 22, 26, 0.75);
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+  .hero-title {
+    font-size: 1.85rem;
+  }
+  .section {
+    padding: 2.5rem 0;
+  }
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

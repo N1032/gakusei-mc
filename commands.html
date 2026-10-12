@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コマンド一覧 - GAKUSEI：建築学生サーバー</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=IBM+Plex+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 2カラム構成 -->
+  <div class="page-layout container">
+    <aside class="toc-sidebar">
+      <div class="toc-header">
+        <span class="toc-tag">CONTROLLER</span>
+        <h4 class="toc-title">コマンド検索</h4>
+      </div>
+      <div class="cmd-sidebar-controller">
+        <div class="cmd-side-search-box">
+          <label for="sideCmdSearch">キーワード検索</label>
+          <div class="side-search-input-wrap">
+            <input type="text" id="sideCmdSearch" placeholder="例: /wo, set, pvp...">
+            <div class="search-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmd-side-filters">
+          <span class="cmd-side-filters-label">カテゴリ選択</span>
+          <button class="side-filter-btn active" data-cat="all">
+            <span>すべて表示</span>
+            <span>▶</span>
+          </button>
+          <button class="side-filter-btn" data-cat="world">
+            <span>ワールド基本</span>
+            <span>▶</span>
+          </button>
+          <button class="side-filter-btn" data-cat="world-setting">
+            <span>ワールド設定</span>
+            <span>▶</span>
+          </button>
+          <button class="side-filter-btn" data-cat="worldedit">
+            <span>WorldEdit</span>
+            <span>▶</span>
+          </button>
+          <button class="side-filter-btn" data-cat="other">
+            <span>その他</span>
+            <span>▶</span>
+          </button>
+        </div>
+
+        <div class="cmd-count-status" id="cmdCountStatus">表示中: 0件</div>
+      </div>
+    </aside>
+
+    <div class="content-main">
+      <div class="section-header">
+        <span class="section-tag">COMMAND LIST</span>
+        <h1 class="section-title">サーバーコマンド一覧</h1>
+        <p class="section-desc">コマンドをクリックすると、引数（カッコ部分）を除いたコマンド本体をワンクリックでコピーできます。</p>
+      </div>
+
+      <div class="command-table-container">
+        <table class="command-table">
+          <thead>
+            <tr>
+              <th style="width: 36%;">コマンド構文 (クリックでコピー)</th>
+              <th style="width: 48%;">機能説明</th>
+              <th style="width: 16%;">区分</th>
+            </tr>
+          </thead>
+          <tbody id="commandTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Discord案内（お問い合わせボタン付き） -->
+      <div class="discord-banner" id="cmd-discord">
+        <h2>公式コミュニティ「トクメームノーサーバー」</h2>
+        <p>Discordで最新情報を得たり、プレイヤー同士のコミュニティに参加してみましょう。参加は任意です。</p>
+        <div class="banner-actions">
+          <a href="https://discord.gg/9Ex2hYVqra" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            Discordに参加する
+            <svg class="icon-ext" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+          </a>
+          <a href="contact.html" class="btn btn-outline-white">
+            お問い合わせフォーム
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- データファイルと共通UIスクリプトの読み込み -->
+  <script src="data.js"></script>
+  <script src="common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // commandsDataの描画＆かっこ除外コピー処理
+      const tbody = document.getElementById('commandTableBody');
+      const countStatus = document.getElementById('cmdCountStatus');
+
+      if (typeof commandsData !== 'undefined' && tbody) {
+        tbody.innerHTML = commandsData.map(cmd => {
+          const cleanCommand = cmd.syntax.replace(/\[.*?\]/g, '').trim();
+          return `
+            <tr data-cat="${cmd.category}">
+              <td><code title="クリックしてコピー" data-clean="${cleanCommand}">${cmd.syntax}</code></td>
+              <td>${cmd.desc}</td>
+              <td><span class="cmd-category-tag">${cmd.categoryLabel}</span></td>
+            </tr>
+          `;
+        }).join('');
+
+        tbody.querySelectorAll('code').forEach(codeEl => {
+          codeEl.addEventListener('click', async () => {
+            const commandToCopy = codeEl.getAttribute('data-clean') || codeEl.textContent.trim();
+            try {
+              await navigator.clipboard.writeText(commandToCopy);
+            } catch {
+              const inp = document.createElement('input');
+              inp.value = commandToCopy;
+              document.body.appendChild(inp);
+              inp.select();
+              document.execCommand('copy');
+              document.body.removeChild(inp);
+            }
+            window.showToast(`コピー完了: ${commandToCopy}`);
+          });
+        });
+      }
+
+      // コマンド絞り込み検索
+      const sideCmdSearch = document.getElementById('sideCmdSearch');
+      const sideFilterBtns = document.querySelectorAll('.side-filter-btn');
+      const tableRows = document.querySelectorAll('#commandTableBody tr');
+      let currentCat = 'all';
+
+      function filterTable() {
+        const query = sideCmdSearch ? sideCmdSearch.value.toLowerCase().trim() : '';
+        let visibleCount = 0;
+
+        tableRows.forEach(row => {
+          const cat = row.getAttribute('data-cat');
+          const text = row.textContent.toLowerCase();
+
+          const matchCat = (currentCat === 'all' || cat === currentCat);
+          const matchQuery = (!query || text.includes(query));
+
+          if (matchCat && matchQuery) {
+            row.style.display = '';
+            visibleCount++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        if (countStatus) {
+          countStatus.textContent = `表示中: ${visibleCount}件 / 全${tableRows.length}件`;
+        }
+      }
+
+      if (sideCmdSearch) {
+        sideCmdSearch.addEventListener('input', filterTable);
+      }
+
+      sideFilterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          sideFilterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCat = btn.getAttribute('data-cat');
+          filterTable();
+        });
+      });
+
+      filterTable();
+    });
+  </script>
+</body>
+</html>
