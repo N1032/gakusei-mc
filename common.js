@@ -60,7 +60,7 @@ window.showToast = function(msg) {
         <li><a href="index.html#sec-guide">ワールド作成手順</a></li>
         <li><a href="index.html#sec-specs">推奨スペック</a></li>
         <li>
-          <a href="https://discord.gg/9Ex2hYVqra" target="_blank" rel="noopener noreferrer">
+          <a href="https://x.com/MUMEI_1032/status/2062990677764718611?s=20" target="_blank" rel="noopener noreferrer">
             Discordコミュニティ
             <svg class="icon-ext" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
           </a>
@@ -137,7 +137,7 @@ window.showToast = function(msg) {
           <a href="features.html">独自機能</a>
           <a href="commands.html">コマンド</a>
           <a href="contact.html">お問い合わせ</a>
-          <a href="https://discord.gg/9Ex2hYVqra" target="_blank" rel="noopener noreferrer">
+          <a href="https://x.com/MUMEI_1032/status/2062990677764718611?s=20" target="_blank" rel="noopener noreferrer">
             Discord
             <svg class="icon-ext" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
           </a>
