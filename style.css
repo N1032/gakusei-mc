@@ -1537,3 +1537,14 @@ section, article, .scroll-target {
     align-items: flex-start;
   }
 }
+
+/* =========================================
+   最新情報：詳細項目が1つだけの時は全幅に広げる修正
+   ========================================= */
+#newsHighlightContainer [class*="grid"] > *:only-child,
+#newsHighlightContainer [class*="section"] > *:only-child,
+#newsHighlightContainer div:has(> *:only-child) > *:only-child {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}

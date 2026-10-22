@@ -28,34 +28,24 @@ const announcementsData = [
 // ==========================================================================
 const newsData = {
   currentTopic: {
-    badge: "2026/10/12 UPDATED",
-    title: "WorldEdit 範囲選択の図形拡張 ＆ ウェルカムメッセージ機能の実装",
-    description: "従来の直方体選択に加え、多彩な幾何学形状での範囲指定が可能になりました。また、自ワールドへの来訪者にメッセージを自動送信できるシステムが導入されました。",
+    badge: "2026/10/22 UPDATED",
+    title: "サーバー運営に関するお知らせ",
+    description: "いつも建築学生サーバーをご利用いただきありがとうございます。さて昨日発表されたPHPやOracle Javaに関する脆弱性がニュース等で報じられておりますが、当サーバーおよび公式Webサイトは対象のソフトウェアを利用してないため、影響はありません。",
     sections: [
       {
-        heading: "追加されたWorldEdit範囲選択モード",
+        heading: "脆弱性が発表されたソフトウェアについて",
         items: [
-          "<code>//sel poly</code> : 多角形選択（左クリックで開始、右クリックで頂点を追加）",
-          "<code>//sel sphere</code> : 球体選択（中心と半径を指定）",
-          "<code>//sel cyl</code> : 円柱選択（底面中心と半径・高さを指定）",
-          "<code>//sel extend</code> : 拡張選択（右クリックしたブロックを含むよう直方体が自動拡大）",
-          "<code>//sel cuboid</code> : 標準の立方体選択に戻す"
-        ]
-      },
-      {
-        heading: "新機能・改良項目",
-        items: [
-          "<strong>ウェルカムメッセージ</strong>: <code>/wo s msg [メッセージ]</code> で自ワールドの挨拶文を設定可能",
-          "<strong>ウィンドチャージ制限</strong>: 一度に対空できる上限数を設定しサーバー負荷を軽減",
-          "<strong>判定向上</strong>: ワールドメニューを開く判定ロジックを改良"
+          "<code>PHP</code> : サーバーおよびWebサイトではPHPを使用していません。",
+          "<code>Oracle Java</code> : 当サーバーではOpenJDKという別のものを使用しているため、今回のものとは関係がありません。"
         ]
       }
     ]
   },
   timeline: [
+    { date: "2026/10/12", text: "WorldEdit範囲選択機能の拡張。ウェルカムメッセージ機能の実装" },
     { date: "2026/10/10", text: "ロビーワールドの改良を実施。" },
     { date: "2026/10/06", text: "インベントリスロットが置き換わる不具合を修正。ウィンドチャージ上限設定、ワールドメニュー判定改良。" },
-    { date: "2026/10/05", text: "WorldEdit置換機能 <code>/tool repl</code> コマンドを追加。" },
+    { date: "2026/10/05", text: "WorldEdit置換機能 <code>//tool repl</code> コマンドを追加。" },
     { date: "2026/10/04", text: "WorldEdit選択範囲の可視化、ペースト前プレビュー（<code>/set view</code>）、短縮コマンド（<code>/s</code>, <code>/c</code>, <code>/p</code>, <code>/d</code>）を実装。" },
     { date: "2026/10/03", text: "<span class=\"marker\">第2シーズン サービス開始</span>：ホストサーバースペックの増強、レッドストーン回路の解禁、UI改良。" },
     { date: "2026/08/31", text: "第1シーズン サービス終了（希望者へワールドデータの配布を実施）。" },
