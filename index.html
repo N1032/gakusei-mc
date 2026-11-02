@@ -24,30 +24,53 @@
     <div class="container hero-container">
       <div class="hero-badge">Minecraft Java / Bedrock クロスプレイ対応</div>
       <h1 class="hero-title">
-        <span class="highlight">一人ひとつのワールド</span>が貰える</br>
+        <span class="highlight">一人ひとつのワールド</span>が貰える<br>
         建築サーバー。
       </h1>
       <p class="hero-lead">
         それは、昔存在した幻のサーバーを再現するためにとある一人の学生が思い立って造り上げた、パクリと（少々の）不具合が積み重なった壮大なるサーバー</span>である。
       </p>
 
-      <!-- サーバー接続情報カード -->
-      <div class="server-connection-box" id="sec-address">
-        <div class="connection-item">
-          <span class="connection-label">サーバーアドレス (Java / Bedrock)</span>
-          <div class="copy-field" data-copy="m1032.duckdns.org">
-            <code>m1032.duckdns.org</code>
-            <button class="btn-copy">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13"></rect><path d="M5 15H4V4h11v1"></path></svg>
-              <span>コピー</span>
-            </button>
+      <!-- サーバー接続情報エリア (ボックス内タブ切り替え) -->
+      <div id="sec-address" class="server-connection-box">
+        
+        <!-- プラットフォーム切り替えタブ (ボックス内) -->
+        <div class="platform-toggle-container">
+          <button id="tab-java" class="platform-tab active" onclick="switchPlatform('java')">Java Edition</button>
+          <button id="tab-bedrock" class="platform-tab" onclick="switchPlatform('bedrock')">Bedrock Edition</button>
+        </div>
+
+        <!-- Java版 接続情報 -->
+        <div id="box-java" style="display: flex; flex-wrap: wrap; width: 100%;">
+          <div class="connection-item" style="width: 100%;">
+            <span class="connection-label">サーバーアドレス</span>
+            <div class="copy-field" data-copy="m1032.duckdns.org">
+              <code>m1032.duckdns.org</code>
+              <button class="btn-copy">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13"></rect><path d="M5 15H4V4h11v1"></path></svg>
+                <span>コピー</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="connection-item">
-          <span class="connection-label">Bedrock向けポート</span>
-          <div class="static-field">
-            <code>19132</code>
+        <!-- 統合版 接続情報 -->
+        <div id="box-bedrock" style="display: none; flex-wrap: wrap; width: 100%; gap: 15px; align-items: flex-end;">
+          <div class="connection-item" style="flex: 1; min-width: 200px;">
+            <span class="connection-label">サーバーアドレス</span>
+            <div class="copy-field" data-copy="floralseabird.wdn.gg">
+              <code>floralseabird.wdn.gg</code>
+              <button class="btn-copy">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13"></rect><path d="M5 15H4V4h11v1"></path></svg>
+                <span>コピー</span>
+              </button>
+            </div>
+          </div>
+          <div class="connection-item" style="min-width: 120px;">
+            <span class="connection-label">ポート</span>
+            <div class="static-field">
+              <code>443</code>
+            </div>
           </div>
         </div>
       </div>
@@ -55,7 +78,11 @@
       <div class="hero-actions">
         <a href="#sec-guide" class="btn btn-primary">ワールドの作り方</a>
         <a href="features.html" class="btn btn-dark">独自システムを見る</a>
-        <a href="commands.html" class="btn">コマンド一覧</a>
+        <a href="commands.html" class="btn btn-dark">コマンド一覧</a>
+        <a href="https://floralseabird.wdn.gg/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white" id="btn-oneclick">
+          ワンクリック接続（BE版のみ）
+          <svg class="icon-ext" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
+        </a>
       </div>
     </div>
   </section>
@@ -97,7 +124,7 @@
           </div>
           <div class="card">
             <h3 class="card-title">Java ＆ 統合版マルチプレイ</h3>
-            <p class="card-desc">PC（Java Edition）、スマホ・タブレット・Windows（Bedrock Edition）のどちらからでも同じ空間に集まることが可能です。<br><span class="marker">Minecraft Java : 26.2</span><br><span class="marker">Minecraft Bedrock : v26.52</span><br>Bedrockは自動アップデートをOFFにしてください。アップデート配信直後はサーバーに参加できない場合があります。</p>
+            <p class="card-desc">PC（Java Edition）、スマホ・タブレット・Windows（Bedrock Edition）のどちらからでも同じ空間に集まることが可能です。<br><span class="marker">Minecraft Java : 26.2</span><br><span class="marker">Minecraft Bedrock : v26.60</span><br>Bedrockは自動アップデートをOFFにしてください。アップデート配信直後はサーバーに参加できない場合があります。</p>
           </div>
         </div>
       </section>
@@ -115,7 +142,7 @@
             <div class="step-index">01</div>
             <div class="step-content">
               <h3>サーバーへ接続</h3>
-              <p>アドレス <code>m1032.duckdns.org</code>（統合版ポート <code>19132</code>）でサーバーに参加します。</p>
+              <p>サイト上部に記載されているアドレス・ポートを参照してサーバーに参加します。</p>
             </div>
           </div>
 
@@ -245,8 +272,21 @@
   <script src="data.js"></script>
   <script src="common.js"></script>
 
-  <!-- YouTube背景動画制御 -->
+  <!-- YouTube背景動画 ＆ UI制御スクリプト -->
   <script>
+    // === プラットフォーム（Java/Bedrock）切り替え処理 ===
+    window.switchPlatform = function(platform) {
+      const isJava = platform === 'java';
+      // タブボタンの見た目を切り替え
+      document.getElementById('tab-java').classList.toggle('active', isJava);
+      document.getElementById('tab-bedrock').classList.toggle('active', !isJava);
+      
+      // アドレス表示エリアの切り替え
+      document.getElementById('box-java').style.display = isJava ? 'flex' : 'none';
+      document.getElementById('box-bedrock').style.display = isJava ? 'none' : 'flex';
+    };
+
+    // === YouTube API ===
     const ytScript = document.createElement('script');
     ytScript.src = "https://www.youtube.com/iframe_api";
     const firstScript = document.getElementsByTagName('script')[0];
@@ -304,8 +344,16 @@
       if (!document.hidden) ensureVideoPlayback();
     });
 
-    // 最新情報・タイムライン描画
+    // 最新情報・タイムライン描画 ＆ その他UI動作
     document.addEventListener('DOMContentLoaded', () => {
+      
+      // スマホ検知＆初期タブ切り替え（iPhone, iPad, iPod, Android端末の場合に統合版タブを開く）
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.switchPlatform('bedrock');
+      }
+
+      // data.js の描画処理
       if (typeof newsData !== 'undefined') {
         const topic = newsData.currentTopic;
         const highlightContainer = document.getElementById('newsHighlightContainer');
