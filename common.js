@@ -66,7 +66,7 @@ window.showToast = function(msg) {
           </a>
         </li>
         <li>
-          <a href="https://youtube.com/live/8ce26zLTYpM" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.youtube.com/live/G2NF4WxpQNs?si=GoggEODTBZEGC1Ld" target="_blank" rel="noopener noreferrer">
             YouTube公式配信
             <svg class="icon-ext" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><path d="M7 17L17 7M17 7H9M17 7V15"/></svg>
           </a>
