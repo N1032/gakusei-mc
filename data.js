@@ -11,7 +11,7 @@ const announcementsData = [
     badge: "LIVE",
     text: "サーバーの様子はYouTubeにて配信中！",
     linkText: "配信を見る",
-    linkUrl: "https://youtube.com/live/8ce26zLTYpM",
+    linkUrl: "https://www.youtube.com/live/G2NF4WxpQNs?si=GoggEODTBZEGC1Ld",
     isExternal: true
   },
   {
